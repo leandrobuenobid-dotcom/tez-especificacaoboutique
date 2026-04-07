@@ -1,11 +1,16 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('tez-token')
+    if (token) window.location.href = '/dashboard'
+  }, [])
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -15,15 +20,12 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ email, senha }),
       })
       const data = await res.json()
-      if (!res.ok) {
-        setErro(data.erro || 'Erro ao entrar.')
-        setLoading(false)
-        return
-      }
+      if (!res.ok) { setErro(data.erro || 'Erro ao entrar.'); setLoading(false); return }
+      localStorage.setItem('tez-token', data.token)
+      localStorage.setItem('tez-user', JSON.stringify(data.usuario))
       window.location.href = '/dashboard'
     } catch {
       setErro('Erro de conexão. Tente novamente.')
@@ -40,22 +42,20 @@ export default function LoginPage() {
         </div>
         <div className="bg-white rounded-2xl border border-[#E8DFD0] p-8 shadow-sm">
           <h2 className="text-base font-medium text-[#2C2520] mb-6">Acesso ao sistema</h2>
-          {erro && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{erro}</div>
-          )}
+          {erro && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{erro}</div>}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-medium text-[#6B5A4E] tracking-wider mb-1.5 uppercase">E-mail</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="seu@email.com.br"
-                className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm text-[#2C2520] bg-white focus:outline-none focus:border-[#C4A882] transition-colors" />
+                className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm focus:outline-none focus:border-[#C4A882]" />
             </div>
             <div>
               <label className="block text-xs font-medium text-[#6B5A4E] tracking-wider mb-1.5 uppercase">Senha</label>
               <input type="password" value={senha} onChange={e => setSenha(e.target.value)} required placeholder="••••••••"
-                className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm text-[#2C2520] bg-white focus:outline-none focus:border-[#C4A882] transition-colors" />
+                className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm focus:outline-none focus:border-[#C4A882]" />
             </div>
             <button type="submit" disabled={loading}
-              className="w-full py-3 bg-[#2C2520] text-white rounded-lg text-sm font-medium tracking-wide hover:bg-[#8B6B4A] transition-colors disabled:opacity-60 mt-2">
+              className="w-full py-3 bg-[#2C2520] text-white rounded-lg text-sm font-medium hover:bg-[#8B6B4A] transition-colors disabled:opacity-60 mt-2">
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>

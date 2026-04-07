@@ -2,6 +2,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Nav from '@/components/Nav'
+import AuthGuard, { authFetch } from '@/components/AuthGuard'
 
 // ─── Dados de catálogo ───────────────────────────────────────────────────────
 const CATS = [
@@ -48,8 +49,6 @@ function EspecificacaoInner() {
   const router = useRouter()
 
   // Sessão (lida via cookie já pelo middleware — buscamos via API)
-  const [session, setSession] = useState<{ nome: string; perfil: string; boutiqueName: string } | null>(null)
-
   const [step, setStep] = useState(1)
   const [cat, setCat] = useState(searchParams.get('cat') || '')
   const [linha, setLinha] = useState('')
@@ -73,7 +72,6 @@ function EspecificacaoInner() {
   const [copiado, setCopiado] = useState(false)
 
   useEffect(() => {
-    fetch('/api/auth/me').then(r => r.json()).then(d => setSession(d.usuario)).catch(() => {})
     if (searchParams.get('cat')) setStep(2)
   }, [])
 
@@ -104,9 +102,8 @@ function EspecificacaoInner() {
       usarPrimer, usarFundo, usarTela, precos,
     }
 
-    const res = await fetch('/api/simulacoes', {
+    const res = await authFetch('/api/simulacoes', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(entrada),
     })
     const data = await res.json()
@@ -541,26 +538,20 @@ function EspecificacaoInner() {
 
 export default function EspecificacaoPage() {
   return (
-    <div className="min-h-screen">
-      <Suspense fallback={null}>
-        <EspecificacaoWrapper />
-      </Suspense>
-    </div>
+    <AuthGuard>
+      <div className="min-h-screen">
+        <Suspense fallback={null}>
+          <EspecificacaoWrapper />
+        </Suspense>
+      </div>
+    </AuthGuard>
   )
 }
 
 function EspecificacaoWrapper() {
-  const [session, setSession] = useState<{ nome: string; perfil: string; boutiqueName: string } | null>(null)
-
-  useEffect(() => {
-    fetch('/api/auth/me').then(r => r.json()).then(d => {
-      if (d.usuario) setSession(d.usuario)
-    }).catch(() => {})
-  }, [])
-
   return (
     <>
-      {session && <Nav nome={session.nome} perfil={session.perfil} boutique={session.boutiqueName} />}
+      <Nav />
       <main className="max-w-2xl mx-auto px-4 py-8">
         <Suspense fallback={<p className="text-sm text-[#6B5A4E]">Carregando...</p>}>
           <EspecificacaoInner />

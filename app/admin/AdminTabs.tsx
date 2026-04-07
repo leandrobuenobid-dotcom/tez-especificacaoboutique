@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { authFetch } from '@/components/AuthGuard'
 
 interface Boutique { id: string; nome: string; cidade: string; estado: string; status: string; totalUsuarios: number; totalSimulacoes: number }
 interface Usuario { id: string; boutiqueId: string; nome: string; email: string; perfil: string; status: string; boutiqueName: string }
@@ -43,7 +44,7 @@ export default function AdminTabs({ dados }: Props) {
   async function salvarBoutique() {
     if (!formB.nome) return
     setSalvando(true)
-    const res = await fetch('/api/admin/boutiques', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formB) })
+    const res = await authFetch('/api/admin/boutiques', { method: 'POST', body: JSON.stringify(formB) })
     const data = await res.json()
     if (res.ok) {
       setBoutiques(prev => [...prev, { ...data.boutique, totalUsuarios: 0, totalSimulacoes: 0 }])
@@ -56,7 +57,7 @@ export default function AdminTabs({ dados }: Props) {
   async function salvarUsuario() {
     if (!formU.nome || !formU.email || !formU.senha || !formU.boutiqueId) { setMsg('Preencha todos os campos.'); return }
     setSalvando(true)
-    const res = await fetch('/api/admin/usuarios', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formU) })
+    const res = await authFetch('/api/admin/usuarios', { method: 'POST', body: JSON.stringify(formU) })
     const data = await res.json()
     if (res.ok) {
       setUsuarios(prev => [...prev, { ...data.usuario, boutiqueName: boutiques.find(b => b.id === formU.boutiqueId)?.nome || '—' }])

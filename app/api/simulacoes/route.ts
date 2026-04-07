@@ -10,13 +10,13 @@ export async function GET(req: NextRequest) {
   let sims = db.simulacoes
   if (session.perfil !== 'admin') sims = sims.filter(s => s.boutiqueId === session.boutiqueId)
   const enriched = sims
-    .sort((a, b) => new Date(b.criadoEm).getTime() - new Date(a.criadoEm).getTime())
-    .slice(0, 50)
-    .map(s => {
-      const u = db.usuarios.find(u => u.id === s.usuarioId)
-      const b = db.boutiques.find(b => b.id === s.boutiqueId)
-      return { ...s, nomeUsuario: u?.nome || '—', nomeBoutique: b?.nome || '—' }
-    })
+    .sort((a,b) => new Date(b.criadoEm).getTime()-new Date(a.criadoEm).getTime())
+    .slice(0,50)
+    .map(s => ({
+      ...s,
+      nomeUsuario: db.usuarios.find(u=>u.id===s.usuarioId)?.nome||'—',
+      nomeBoutique: db.boutiques.find(b=>b.id===s.boutiqueId)?.nome||'—'
+    }))
   return NextResponse.json({ simulacoes: enriched })
 }
 
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   if (!entrada.categoriaId || !entrada.area || entrada.area <= 0) return NextResponse.json({ erro: 'Dados inválidos.' }, { status: 400 })
   const resultado = calcular(entrada)
   const db = await getDB()
-  const simulacao = { id: generateId('sim'), boutiqueId: session.boutiqueId, usuarioId: session.userId, categoria: entrada.categoriaId, produto: resultado.itens[0]?.nome || '', payloadEntrada: entrada, resultado, criadoEm: new Date().toISOString() }
+  const simulacao = { id: generateId('sim'), boutiqueId: session.boutiqueId, usuarioId: session.userId, categoria: entrada.categoriaId, produto: resultado.itens[0]?.nome||'', payloadEntrada: entrada, resultado, criadoEm: new Date().toISOString() }
   db.simulacoes.push(simulacao)
   await saveDB(db)
   return NextResponse.json({ ok: true, simulacao })
