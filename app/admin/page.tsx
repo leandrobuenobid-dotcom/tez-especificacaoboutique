@@ -9,7 +9,7 @@ export default async function AdminPage() {
   if (!session) redirect('/login')
   if (session.perfil !== 'admin') redirect('/dashboard')
 
-  const db = getDB()
+  const db = await getDB()
 
   const dados = {
     boutiques: db.boutiques.map(b => ({
@@ -38,8 +38,6 @@ export default async function AdminPage() {
           <h1 className="text-2xl font-serif text-[#2C2520]">Painel Admin</h1>
           <p className="text-sm text-[#6B5A4E] mt-1">Gestão completa da plataforma Tez</p>
         </div>
-
-        {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
             { label: 'Simulações', val: dados.stats.totalSimulacoes },
@@ -53,7 +51,6 @@ export default async function AdminPage() {
             </div>
           ))}
         </div>
-
         <AdminTabs dados={dados} />
       </main>
     </div>
