@@ -6,26 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "ioredis": "^5.3.2",
-    "jsonwebtoken": "^9.0.2",
+    "@libsql/client": "^0.17.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.3",
+    "ioredis": "^5.10.1",
+    "jsonwebtoken": "^9.0.3",
+    "lowdb": "^7.0.1",
     "next": "16.2.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.39",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4",
     "typescript": "^5"
   }
 }

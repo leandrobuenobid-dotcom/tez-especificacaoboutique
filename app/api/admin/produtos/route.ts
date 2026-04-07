@@ -17,4 +17,23 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = getSessionFromRequest(req)
-  if (
+  if (!session || session.perfil !== 'admin') return NextResponse.json({ erro: 'Apenas admin.' }, { status: 403 })
+  const dados: Omit<Produto, 'id'|'criadoEm'> = await req.json()
+  const db = await getDB()
+  const novo: Produto = { ...dados, id: generateId('p'), criadoEm: new Date().toISOString() }
+  db.produtos.push(novo)
+  await saveDB(db)
+  return NextResponse.json({ ok: true, produto: novo }, { status: 201 })
+}
+
+export async function PUT(req: NextRequest) {
+  const session = getSessionFromRequest(req)
+  if (!session || session.perfil !== 'admin') return NextResponse.json({ erro: 'Apenas admin.' }, { status: 403 })
+  const { id, ...dados } = await req.json()
+  const db = await getDB()
+  const idx = db.produtos.findIndex(p => p.id === id)
+  if (idx === -1) return NextResponse.json({ erro: 'Não encontrado.' }, { status: 404 })
+  db.produtos[idx] = { ...db.produtos[idx], ...dados }
+  await saveDB(db)
+  return NextResponse.json({ ok: true, produto: db.produtos[idx] })
+}
