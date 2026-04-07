@@ -42,9 +42,9 @@ export function cookieOptions() {
   return {
     name: COOKIE_NAME,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    maxAge: 60 * 60 * 8, // 8h
+    secure: true,
+    sameSite: 'none' as const,
+    maxAge: 60 * 60 * 8,
     path: '/',
   }
 }
