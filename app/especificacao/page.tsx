@@ -28,20 +28,55 @@ const CORES_MATTE_PALETTE: Record<string, { hex: string }> = {
   'Alecrim':   { hex: '#6A7848' },
   'Amazônia':  { hex: '#2A6050' },
 }
-
 const CORES_LUNAR_PALETTE = CORES_MATTE_PALETTE
+const CORES_MATTE = Object.keys(CORES_MATTE_PALETTE)
+const CORES_LUNAR = Object.keys(CORES_LUNAR_PALETTE)
 
-const CORES_MATTE  = Object.keys(CORES_MATTE_PALETTE)
-const CORES_LUNAR  = Object.keys(CORES_LUNAR_PALETTE)
+// Cristal — cores aproximadas
+const CORES_CRISTAL_PALETTE: Record<string, { hex: string }> = {
+  'Maldivas':    { hex: '#A8D8D0' },
+  'Dubai':       { hex: '#C8B89A' },
+  'Trancoso':    { hex: '#D4C4A0' },
+  'Rio':         { hex: '#8FB8D0' },
+  'Grécia':      { hex: '#B8D0E0' },
+  'Mykonos':     { hex: '#E8E4DC' },
+  'Madri':       { hex: '#C0A888' },
+  'Pompéia':     { hex: '#A85840' },
+  'Marrocos':    { hex: '#C07040' },
+  'Pedra Ferro': { hex: '#707878' },
+  'Hitam':       { hex: '#282828' },
+  'Dubai Preto': { hex: '#1E1E1E' },
+  'Berilo':      { hex: '#70A890' },
+  'Vulcano':     { hex: '#484848' },
+  'Parise Black':{ hex: '#181818' },
+  'Marroquito':  { hex: '#B87050' },
+  'Dunas':       { hex: '#D8C8A8' },
+  'Full Gray':   { hex: '#909090' },
+  'Grigio':      { hex: '#B0B0A8' },
+  'Hágata':      { hex: '#C0A8C0' },
+  'Dubai Red':   { hex: '#A03828' },
+}
+
+// Granulado — cores aproximadas
+const CORES_GRANULADO_PALETTE: Record<string, { hex: string }> = {
+  'Papel Picado':   { hex: '#F0E8D8' },
+  'Nevada':         { hex: '#E8E8E4' },
+  'Gelo Seco':      { hex: '#D8E0E8' },
+  'Areia':          { hex: '#D4C098' },
+  'Marfim':         { hex: '#E8DCC0' },
+  'Capuccino':      { hex: '#B89070' },
+  'Cinza Claro':    { hex: '#C0C0BC' },
+  'Cinza Elefante': { hex: '#808080' },
+  'Carbono':        { hex: '#303030' },
+}
 
 const CATS = [
-  { id: 'cimento',   nome: 'Cimento Queimado',           imgUrl: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=600&q=80', desc: 'Matte e Lunar' },
-  { id: 'cristal',   nome: 'Cristal de Pedras Naturais', imgUrl: 'https://images.unsplash.com/photo-1615971677499-5467cbab01b0?w=600&q=80', desc: '#10 e #20' },
-  { id: 'drenante',  nome: 'Piso Drenante Resinado',     imgUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', desc: 'Uso externo' },
-  { id: 'granulado', nome: 'Granulados',                  imgUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80', desc: '9 cores' },
+  { id: 'cimento',   nome: 'Cimento Queimado',           imgUrl: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80', desc: 'Matte e Lunar' },
+  { id: 'cristal',   nome: 'Cristal de Pedras Naturais', imgUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80', desc: '#10 e #20' },
+  { id: 'drenante',  nome: 'Piso Drenante Resinado',     imgUrl: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80', desc: 'Uso externo' },
+  { id: 'granulado', nome: 'Granulados',                  imgUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', desc: '9 cores' },
 ]
 
-const CORES_CRISTAL = ['Maldivas','Dubai','Trancoso','Rio','Grécia','Mykonos','Madri','Pompéia','Marrocos','Pedra Ferro','Hitam','Dubai Preto','Berilo','Vulcano','Parise Black','Marroquito','Dunas','Full Gray','Grigio','Hágata','Dubai Red']
 const GRAN_POR_COR: Record<string, string[]> = {
   'Maldivas':['#10','#20'],'Dubai':['#10','#20'],'Trancoso':['#20'],'Rio':['#20'],
   'Grécia':['#10','#20'],'Mykonos':['#10','#20'],'Madri':['#10','#20'],
@@ -52,7 +87,6 @@ const GRAN_POR_COR: Record<string, string[]> = {
   'Hágata':['#20'],'Dubai Red':['#10'],
 }
 const CORES_DRENANTE = ['Poseidon','Lago Tahoe','Palácio','Ponte do Gard','Ipanema','Capela Sistina','Versalhes','Toscana','Ilha Ellis','Key West','Coral Springs','Seixo Cinza','Pérola','Gema Negra','Platina']
-const CORES_GRANULADO = ['Papel Picado','Nevada','Gelo Seco','Areia','Marfim','Capuccino','Cinza Claro','Cinza Elefante','Carbono']
 
 const PERDA_PRESETS_CIMENTO  = [[5,'Baixo'],[10,'Médio'],[15,'Alto']] as const
 const PERDA_PRESETS_DRENANTE = [[10,'Baixo'],[15,'Médio'],[20,'Alto']] as const
@@ -70,13 +104,17 @@ function fmt(v: number) {
   return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
-function ColorSwatch({ nome, hex, selected, onClick }: { nome: string; hex: string; selected: boolean; onClick: () => void }) {
+function ColorSwatch({ nome, hex, selected, onClick, size = 'sm' }: {
+  nome: string; hex: string; selected: boolean; onClick: () => void; size?: 'sm' | 'lg'
+}) {
+  const isLight = parseInt(hex.slice(1), 16) > 0xAAAAAA
   return (
-    <button
-      onClick={onClick}
-      className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border transition-all ${selected ? 'border-[#D4875A] bg-[#FDF5EE] shadow-sm' : 'border-[#E8DFD0] bg-white hover:border-[#C4A882]'}`}
-    >
-      <div className="w-9 h-9 rounded-full border border-black/10 shadow-inner" style={{ backgroundColor: hex }} />
+    <button onClick={onClick}
+      className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border transition-all ${selected ? 'border-[#D4875A] bg-[#FDF5EE] shadow-sm' : 'border-[#E8DFD0] bg-white hover:border-[#C4A882]'}`}>
+      <div
+        className={`rounded-full border border-black/10 shadow-inner ${size === 'lg' ? 'w-12 h-12' : 'w-9 h-9'}`}
+        style={{ backgroundColor: hex }}
+      />
       <span className="text-[10px] text-[#2C2520] font-medium text-center leading-tight">{nome}</span>
     </button>
   )
@@ -109,38 +147,46 @@ function EspecificacaoInner() {
   const [salvo, setSalvo] = useState(false)
   const [copiado, setCopiado] = useState(false)
 
-  useEffect(() => {
-    if (searchParams.get('cat')) setStep(2)
-  }, [])
+  useEffect(() => { if (searchParams.get('cat')) setStep(2) }, [])
+  useEffect(() => { if (cat === 'drenante') setPerda(10); else setPerda(5) }, [cat])
 
-  useEffect(() => {
-    if (cat === 'drenante') setPerda(10)
-    else setPerda(5)
-  }, [cat])
-
+  // Quando muda substrato do drenante — ajusta primer e tela automaticamente
   useEffect(() => {
     if (cat !== 'drenante') return
     setUsarTela(true)
     setMostrarAvisoTela(false)
-    if (tipoBase === 'Contrapiso Leve' || tipoBase === 'Contrapiso Pesado') {
+    if (tipoBase === 'Solo Natural') {
+      setUsarPrimer(false)
+      setMostrarAvisoPrimer(false)
+    } else if (tipoBase === 'Contrapiso') {
+      setUsarPrimer(true)
+      setMostrarAvisoPrimer(false)
+    } else if (tipoBase === 'Concreto Drenante') {
       setUsarPrimer(true)
       setMostrarAvisoPrimer(false)
     }
   }, [tipoBase, cat])
 
-  function calcAreaAuto() {
-    const l = parseFloat(largura), c = parseFloat(comprimento)
-    if (l > 0 && c > 0) setArea(String(+(l * c).toFixed(2)))
-  }
+  // Calcula área automaticamente quando largura e comprimento mudam
+  useEffect(() => {
+    const l = parseFloat(largura)
+    const c = parseFloat(comprimento)
+    if (l > 0 && c > 0) {
+      setArea(String(+(l * c).toFixed(2)))
+    }
+  }, [largura, comprimento])
 
-  function handleDesmarcarTela() {
-    setUsarTela(false)
-    setMostrarAvisoTela(true)
-  }
+  function handleDesmarcarTela() { setUsarTela(false); setMostrarAvisoTela(true) }
 
-  function handleDesmarcarPrimer() {
-    setUsarPrimer(false)
-    if (tipoBase === 'Contrapiso Leve' || tipoBase === 'Contrapiso Pesado') setMostrarAvisoPrimer(true)
+  function handleTogglePrimer(checked: boolean) {
+    setUsarPrimer(checked)
+    if (!checked && tipoBase === 'Solo Natural') {
+      setMostrarAvisoPrimer(false) // Solo natural: normal desmarcar
+    } else if (!checked) {
+      setMostrarAvisoPrimer(true)
+    } else {
+      setMostrarAvisoPrimer(false)
+    }
   }
 
   function passo2Pronto() {
@@ -160,10 +206,14 @@ function EspecificacaoInner() {
       tipoBase, tipoTrafego, area: areaNum, perda,
       usarPrimer, usarFundo, usarTela, usarCera, consumoPrimer, precos,
     }
-    const res = await authFetch('/api/simulacoes', { method: 'POST', body: JSON.stringify(entrada) })
-    const data = await res.json()
-    if (res.ok) { setResultado(data.simulacao.resultado); setSalvo(true); setStep(4) }
-    else alert(data.erro || 'Erro ao calcular.')
+    try {
+      const res = await authFetch('/api/simulacoes', { method: 'POST', body: JSON.stringify(entrada) })
+      const data = await res.json()
+      if (res.ok) { setResultado(data.simulacao.resultado); setSalvo(true); setStep(4) }
+      else alert(data.erro || 'Erro ao calcular.')
+    } catch (e) {
+      alert('Erro de conexão. Tente novamente.')
+    }
   }
 
   function gerarTexto() {
@@ -237,9 +287,10 @@ function EspecificacaoInner() {
     </div>
   )
 
-  const avisoCard = (texto: string) => (
-    <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-900 leading-relaxed flex gap-2 mt-2">
-      <span className="text-base shrink-0">⚠️</span><span>{texto}</span>
+  const avisoCard = (texto: string, tipo: 'erro' | 'aviso' = 'aviso') => (
+    <div className={`p-3 rounded-xl text-xs leading-relaxed flex gap-2 mt-2 ${tipo === 'erro' ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-amber-50 border border-amber-300 text-amber-900'}`}>
+      <span className="text-base shrink-0">{tipo === 'erro' ? '🚫' : '⚠️'}</span>
+      <span>{texto}</span>
     </div>
   )
 
@@ -260,6 +311,7 @@ function EspecificacaoInner() {
     </div>
   )
 
+  // ── STEP 1 ──
   if (step === 1) return (
     <div>
       {navBar}
@@ -292,20 +344,22 @@ function EspecificacaoInner() {
     </div>
   )
 
+  // ── STEP 2 ──
   if (step === 2) return (
     <div>
       {navBar}
       <h2 className="text-xl font-serif text-[#2C2520] mb-1">{CATS.find(c => c.id === cat)?.nome}</h2>
       <p className="text-sm text-[#6B5A4E] mb-6">Configure o produto</p>
 
+      {/* CIMENTO */}
       {cat === 'cimento' && (
         <div className="space-y-5">
           <div className="flex gap-3">
             <div className="flex-1 p-3 bg-[#F5EFE0] border border-[#E8DFD0] rounded-xl text-xs text-[#6B5A4E] flex items-center gap-2">
-              <span>🏠</span> Aplicação: <strong>Parede e Teto</strong>
+              🏠 Aplicação: <strong>Parede e Teto</strong>
             </div>
             <div className="flex-1 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-700 flex items-center gap-2">
-              <span>🔒</span> <strong>Uso interno</strong> exclusivamente
+              🔒 <strong>Uso interno</strong> exclusivamente
             </div>
           </div>
           <div>
@@ -313,11 +367,7 @@ function EspecificacaoInner() {
             <div className="flex gap-2">
               {['Matte','Lunar'].map(l => radioBtn(l, linha===l, () => { setLinha(l); setCor('') }))}
             </div>
-            {linha === 'Lunar' && (
-              <p className="text-xs text-blue-600 mt-2 bg-blue-50 rounded-lg px-3 py-2">
-                Linha Lunar tem acabamento perolizado — uso exclusivo em ambientes internos.
-              </p>
-            )}
+            {linha === 'Lunar' && <p className="text-xs text-blue-600 mt-2 bg-blue-50 rounded-lg px-3 py-2">Linha Lunar tem acabamento perolizado — uso exclusivo em ambientes internos.</p>}
           </div>
           {linha && (
             <div>
@@ -346,9 +396,19 @@ function EspecificacaoInner() {
         </div>
       )}
 
+      {/* CRISTAL */}
       {cat === 'cristal' && (
         <div className="space-y-4">
-          <div>{fieldLabel('Cor / Referência')}{selectEl(cor, v => { setCor(v); const g = GRAN_POR_COR[v]||[]; setGran(g.length===1?g[0]:'') }, CORES_CRISTAL)}</div>
+          <div>
+            {fieldLabel('Cor / Referência', cor ? `— ${cor}` : '')}
+            <div className="grid grid-cols-4 gap-2">
+              {Object.entries(CORES_CRISTAL_PALETTE).map(([nome, { hex }]) => (
+                <ColorSwatch key={nome} nome={nome} hex={hex} size="lg"
+                  selected={cor === nome}
+                  onClick={() => { setCor(nome); const g = GRAN_POR_COR[nome]||[]; setGran(g.length===1?g[0]:'') }} />
+              ))}
+            </div>
+          </div>
           {cor && (
             <div>
               {fieldLabel('Granulometria')}
@@ -374,13 +434,14 @@ function EspecificacaoInner() {
         </div>
       )}
 
+      {/* DRENANTE */}
       {cat === 'drenante' && (
         <div className="space-y-4">
           <div>{fieldLabel('Cor / Mistura')}{selectEl(cor, setCor, CORES_DRENANTE)}</div>
           <div>
             {fieldLabel('Tipo de substrato')}
             <div className="flex flex-wrap gap-2">
-              {['Solo Natural','Contrapiso Leve','Contrapiso Pesado','Concreto Drenante'].map(b => radioBtn(b, tipoBase===b, () => setTipoBase(b)))}
+              {['Solo Natural','Contrapiso','Concreto Drenante'].map(b => radioBtn(b, tipoBase===b, () => setTipoBase(b)))}
             </div>
           </div>
           <div>
@@ -392,6 +453,7 @@ function EspecificacaoInner() {
           <div>
             {fieldLabel('Complementares')}
             <div className="space-y-2">
+              {/* Tela */}
               <div className="p-3 bg-white border border-[#E8DFD0] rounded-xl">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={usarTela}
@@ -403,24 +465,33 @@ function EspecificacaoInner() {
                   </div>
                   <span className="text-xs px-2 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full">obrigatório</span>
                 </label>
-                {mostrarAvisoTela && avisoCard('A Tela de Fibra de Vidro é INDISPENSÁVEL para a correta aplicação do Piso Drenante. Recomende ao cliente incluí-la. A venda sem tela é indicada apenas como complemento de pedidos anteriores.')}
+                {mostrarAvisoTela && avisoCard('A Tela de Fibra de Vidro é INDISPENSÁVEL. Venda sem tela apenas como complemento de pedidos anteriores.', 'erro')}
               </div>
+              {/* Primer PU */}
               <div className="p-3 bg-white border border-[#E8DFD0] rounded-xl">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={usarPrimer}
-                    onChange={e => { if (!e.target.checked) handleDesmarcarPrimer(); else { setUsarPrimer(true); setMostrarAvisoPrimer(false) } }}
+                    onChange={e => handleTogglePrimer(e.target.checked)}
                     className="w-4 h-4 accent-[#D4875A]" />
                   <div className="flex-1">
                     <p className="text-sm text-[#2C2520] font-medium">Primer PU</p>
                     <p className="text-xs text-[#6B5A4E]">
-                      {tipoBase === 'Contrapiso Leve' || tipoBase === 'Contrapiso Pesado' ? 'Obrigatório para contrapiso' : 'Recomendado'}
+                      {tipoBase === 'Solo Natural'
+                        ? 'Não recomendado para Solo Natural'
+                        : tipoBase === 'Contrapiso' || tipoBase === 'Concreto Drenante'
+                          ? 'Obrigatório para este substrato'
+                          : 'Recomendado'}
                     </p>
                   </div>
-                  {(tipoBase === 'Contrapiso Leve' || tipoBase === 'Contrapiso Pesado') && (
+                  {(tipoBase === 'Contrapiso' || tipoBase === 'Concreto Drenante') && (
                     <span className="text-xs px-2 py-0.5 bg-red-50 text-red-700 border border-red-200 rounded-full">obrigatório</span>
                   )}
+                  {tipoBase === 'Solo Natural' && !usarPrimer && (
+                    <span className="text-xs px-2 py-0.5 bg-gray-50 text-gray-500 border border-gray-200 rounded-full">não recomendado</span>
+                  )}
                 </label>
-                {mostrarAvisoPrimer && avisoCard('O Primer PU é INDISPENSÁVEL quando a aplicação é sobre contrapiso. Recomende ao cliente incluí-lo no orçamento.')}
+                {mostrarAvisoPrimer && tipoBase !== 'Solo Natural' && avisoCard('O Primer PU é INDISPENSÁVEL para este substrato. Recomende ao cliente incluí-lo.', 'erro')}
+                {tipoBase === 'Solo Natural' && usarPrimer && avisoCard('Primer PU não é recomendado para Solo Natural. Você pode manter no orçamento se o cliente solicitar.')}
                 {usarPrimer && (
                   <div className="mt-3 pt-3 border-t border-[#F0E8DC]">
                     <p className="text-xs text-[#6B5A4E] mb-2">Consumo de primer (g/m²)</p>
@@ -440,12 +511,21 @@ function EspecificacaoInner() {
         </div>
       )}
 
+      {/* GRANULADO */}
       {cat === 'granulado' && (
         <div className="space-y-4">
           <div className="p-3 bg-[#F5EFE0] border border-[#E8DFD0] rounded-xl text-xs text-[#6B5A4E]">
             Consumo: 8 kg/m² · Embalagem: balde 23 kg · Uso interno e externo
           </div>
-          <div>{fieldLabel('Cor')}{selectEl(cor, setCor, CORES_GRANULADO)}</div>
+          <div>
+            {fieldLabel('Cor', cor ? `— ${cor}` : '')}
+            <div className="grid grid-cols-3 gap-2">
+              {Object.entries(CORES_GRANULADO_PALETTE).map(([nome, { hex }]) => (
+                <ColorSwatch key={nome} nome={nome} hex={hex} size="lg"
+                  selected={cor === nome} onClick={() => setCor(nome)} />
+              ))}
+            </div>
+          </div>
           <div>
             {fieldLabel('Incluir primer')}
             <div className="flex gap-2">
@@ -466,6 +546,7 @@ function EspecificacaoInner() {
     </div>
   )
 
+  // ── STEP 3 ──
   if (step === 3) return (
     <div>
       {navBar}
@@ -476,16 +557,21 @@ function EspecificacaoInner() {
           <div>
             {fieldLabel('Largura (m)')}
             <input type="number" min={0.1} step={0.1} placeholder="0,00" value={largura}
-              onChange={e => { setLargura(e.target.value); setTimeout(calcAreaAuto, 50) }}
+              onChange={e => setLargura(e.target.value)}
               className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm focus:outline-none focus:border-[#C4A882]" />
           </div>
           <div>
             {fieldLabel('Comprimento (m)')}
             <input type="number" min={0.1} step={0.1} placeholder="0,00" value={comprimento}
-              onChange={e => { setComprimento(e.target.value); setTimeout(calcAreaAuto, 50) }}
+              onChange={e => setComprimento(e.target.value)}
               className="w-full px-3 py-2.5 border border-[#E8DFD0] rounded-lg text-sm focus:outline-none focus:border-[#C4A882]" />
           </div>
         </div>
+        {largura && comprimento && parseFloat(largura) > 0 && parseFloat(comprimento) > 0 && (
+          <div className="px-3 py-2 bg-[#F5EFE0] border border-[#E8DFD0] rounded-lg text-xs text-[#6B5A4E]">
+            Área calculada: <strong className="text-[#2C2520]">{(parseFloat(largura) * parseFloat(comprimento)).toFixed(2)} m²</strong>
+          </div>
+        )}
         <div>
           {fieldLabel('Ou área total (m²)')}
           <input type="number" min={0.1} step={0.1} placeholder="0,00" value={area}
@@ -523,6 +609,7 @@ function EspecificacaoInner() {
     </div>
   )
 
+  // ── STEP 4 ──
   if (step === 4 && resultado) {
     const principal = resultado.itens.find(i => i.tipoRelacao === 'principal')
     const compComQtd = resultado.itens.filter(i => i.tipoRelacao !== 'principal' && i.quantidade > 0)
