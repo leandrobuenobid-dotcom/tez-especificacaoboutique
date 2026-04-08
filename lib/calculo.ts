@@ -142,8 +142,7 @@ export function calcular(entrada: EntradaCalculo): ResultadoCalculo {
     const tt = entrada.tipoTrafego
     let consumoM2 = 16
     if (tb === 'Solo Natural') consumoM2 = 24
-    else if (tb === 'Contrapiso Leve') consumoM2 = 16
-    else if (tb === 'Contrapiso Pesado') consumoM2 = 24
+    else if (tb === 'Contrapiso') consumoM2 = 16
     else if (tb === 'Concreto Drenante') consumoM2 = 30
 
     const kits = ceil((areaComPerda * consumoM2) / 16)
